@@ -1,0 +1,16 @@
+name: Sales Target Monitor
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours
+jobs:
+  check_sales:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Sales Data
+        run: python agents/sales_agent.py --report
+      - name: Adjust Marketing
+        if: steps.sales.outputs.total < 250 && steps.sales.outputs.days < 7
+        run: |
+          python agents/marketing_agent.py \
+          --boost-budget 5000 \
+          --new-offer "extra_discount_20"
