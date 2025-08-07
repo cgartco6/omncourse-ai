@@ -1,0 +1,14 @@
+name: Trending Topic Scan
+on:
+  schedule:
+    - cron: '0 6 * * *'  # 6am SAST daily
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Scan Trends
+        run: python agents/trending_detector.py
+      - name: Generate Preview
+        if: contains(steps.detect.outputs.topics, 'cybersecurity')
+        run: python agents/preview_generator.py --topic cybersecurity --duration 60
