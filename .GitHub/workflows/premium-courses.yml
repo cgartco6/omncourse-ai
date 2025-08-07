@@ -1,0 +1,15 @@
+name: Premium Course Generator
+on:
+  schedule:
+    - cron: '0 0 */14 * *'  # Bi-weekly
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create R1000 Course
+        run: |
+          python agents/course_generator.py \
+          --topic "Advanced Ethical Hacking" \
+          --price 1000 \
+          --installments 4 \
+          --bonuses "hacking_toolkit,vpn_subscription"
